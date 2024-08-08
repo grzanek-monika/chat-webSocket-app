@@ -4,7 +4,7 @@ const app = express();
 const path = require('path');
 const socket = require('socket.io');
 
-// eslint-disable-next-line no-unused-vars
+const users = [];
 const messages = [];
 
 app.use(express.static(path.join(__dirname, '/client')));
@@ -18,12 +18,23 @@ const server = app.listen(8000, () => {
 
 const io = socket(server);
 io.on('connection', (socket) => {
-    console.log('New client! Its id – ' + socket.id);
-    socket.on('message', (message) => { console.log('Oh, I\'ve got something from ' + socket.id);
+    console.log("Hello, new client!")
+    socket.on('join', (name) => {
+        console.log(`Its ${name} with id: ${socket.id}`);
+        users.push({name, id: socket.id });
+        console.log('users: ', users);
+    })
+    socket.on('message', (message) => { 
+        console.log('Oh, I\'ve got something from ' + socket.id);
         messages.push(message);
         socket.broadcast.emit('message', message);
     });
-    socket.on('disconnect', () => { console.log('Oh, socket ' + socket.id + ' has left') });
+    socket.on('disconnect', () => { 
+        console.log('Oh, socket ' + socket.id + ' has left');
+        const userIndex = users.indexOf(socket.id);
+        users.splice(userIndex, 1);
+        console.log('users: ', users);
+    });
     console.log('I\'ve added a listener on message event \n');
 });
 

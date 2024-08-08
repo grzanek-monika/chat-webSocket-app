@@ -16,6 +16,7 @@ const login = (event) => {
     event.preventDefault();
     if(userNameInput.value){
         userName = userNameInput.value;
+        socket.emit("join", userName );
         loginForm.classList.remove('show');
         messagesSection.classList.add('show');
     } else {

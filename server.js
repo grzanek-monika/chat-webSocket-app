@@ -32,9 +32,11 @@ io.on('connection', (socket) => {
     });
     socket.on('disconnect', () => { 
         console.log('Oh, socket ' + socket.id + ' has left');
+        const user = users.find((user) => user.id === socket.id);
         const userIndex = users.indexOf(socket.id);
         users.splice(userIndex, 1);
         console.log('users: ', users);
+        socket.broadcast.emit('message', {author: "Chat Bot", content: `${user.name} has left the conversation... :(`});
     });
     console.log('I\'ve added a listener on message event \n');
 });

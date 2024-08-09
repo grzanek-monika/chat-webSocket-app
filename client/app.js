@@ -33,12 +33,16 @@ const addMessage = (author, content) => {
     }
     message.innerHTML = `
     <h3 class="message__author">${userName === author ? 'You' : author }</h3>
-    <div class="message__content">
+    <div class="message__content" id="content">
       ${content}
     </div>
   `;
 
     messagesList.appendChild(message);
+    if(author === "Chat Bot") {
+        const contentMsg = document.getElementById("content");
+        contentMsg.classList.add("chatBot");
+    }
 }
 
 const sendMessage = (event) => {

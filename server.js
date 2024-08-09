@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
         console.log(`Its ${name} with id: ${socket.id}`);
         users.push({name, id: socket.id });
         console.log('users: ', users);
+        socket.broadcast.emit("message", {author: "Chat Bot", content: `${name} has joined the conversation!`});
     })
     socket.on('message', (message) => { 
         console.log('Oh, I\'ve got something from ' + socket.id);
